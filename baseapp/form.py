@@ -2,14 +2,15 @@ from django.forms import ModelForm, TextInput, Textarea, CharField, FileInput
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
+
 class RoomForm(ModelForm):
     class Meta:
         model = RommModel
-        fields = ['title','content','category']
+        fields = ['title', 'content', 'category']
         widgets = {
             'title': TextInput(attrs={
-                'class':'inpt',
-                'placeholder':'Title'
+                'class': 'inpt',
+                'placeholder': 'Title'
             }),
             'content': Textarea(attrs={
                 'class': 'inpt',
@@ -17,6 +18,7 @@ class RoomForm(ModelForm):
             }),
 
         }
+
 
 class CategoryForm(ModelForm):
     class Meta:
@@ -29,10 +31,11 @@ class CategoryForm(ModelForm):
             })
         }
 
+
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username','password']
+        fields = ['username', 'password']
         widgets = {
             'username': TextInput(attrs={
                 'class': 'inpt',
@@ -45,6 +48,7 @@ class UserForm(ModelForm):
             })
         }
 
+
 class CustumeUserForm(UserCreationForm):
     password1 = CharField(widget=TextInput(attrs={
         'class': 'inpt',
@@ -56,6 +60,7 @@ class CustumeUserForm(UserCreationForm):
         'type': 'password',
         'placeholder': 'Confirm your password'
     }))
+
     class Meta:
         model = User
         fields = ['username',
@@ -89,9 +94,10 @@ class CustumeUserForm(UserCreationForm):
             }),
         }
 
+
 class MessageForm(ModelForm):
     class Meta:
-        model =Messages
+        model = Messages
         fields = ['message']
         widgets = {
             'message': Textarea(attrs={
@@ -100,3 +106,16 @@ class MessageForm(ModelForm):
             })
         }
 
+
+class UpdateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'last_name',
+            'avatar',
+            'bio',
+            'email',
+            'password1',
+            'password2'
+        ]

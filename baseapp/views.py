@@ -181,12 +181,12 @@ def registration(request):
 
 
 def profile(request, pk):
-    rms = RommModel.objects.filter(user_id = pk)
+    rms = RommModel.objects.filter(user_id=pk)
     cats = Category.objects.all()[:3]
-    user = User.objects.get(id=pk)
+    owner = User.objects.get(id=pk)
     msg = Messages.objects.filter(res_active=True)[:4]
 
-    contex = {'user': user, 'cats': cats, 'msg': msg, 'cnt': rms.count, 'rms': rms}
+    contex = {'owner': owner, 'cats': cats, 'msg': msg, 'cnt': rms.count, 'rms': rms}
     return render(request, 'theme/profile.html', contex)
 
 
@@ -200,26 +200,27 @@ def recent_active(request):
     return render(request, 'theme/activity.html', contex)
 
 
-def settings(request,pk):
+def settings(request, pk):
     user = User.objects.get(id=pk)
-    form = CustumeUserForm(instance=user)
+    form = UpdateUserForm(instance=user)
 
     if request.method == 'POST':
-        form = CustumeUserForm(request.POST,request.FILES,instance=user)
+        form = CustumeUserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
 
-            return redirect('home')
+            return redirect('profile', user.pk)
 
-    contex = {'user': user,'form':form}
+    contex = {'user': user, 'form': form}
     return render(request, 'theme/settings.html', contex)
 
-def active(request,pk):
+
+def active(request, pk):
     msg = Messages.objects.get(id=pk)
 
     msg.res_active = 'False'
     msg.save()
     return redirect('home')
 
-    contex = {'msg':msg}
-    return render(request,'theme/index.html')
+    contex = {'msg': msg}
+    return render(request, 'theme/index.html')
